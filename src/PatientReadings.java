@@ -17,51 +17,51 @@ public class PatientReadings {
 	private PulseOximeterSensor pulseOximeterSensor;
 
 	public int getId() {
-		return 0;
+		return this.id;
 	}
 
 	public void setId(int id) {
-
+		this.id = id;
 	}
 
 	public float getSystolic() {
-		return 0;
+		return this.measured_systolic;
 	}
 
 	public void setSystolic(float systolic) {
-
+		this.measured_systolic = systolic;
 	}
 
 	public float getDiastolic() {
-		return 0;
+		return this.measured_diastolic;
 	}
 
 	public void setDiastolic(float diastolic) {
-
+		this.measured_diastolic = diastolic;
 	}
 
 	public float getRed() {
-		return 0;
+		return this.measured_red;
 	}
 
 	public void setRed(float red) {
-
+		this.measured_red = red;
 	}
 
 	public float getIR() {
-		return 0;
+		return this.measured_ir;
 	}
 
 	public void setIR(float ir) {
-
+		this.measured_ir = ir;
 	}
 
 	public boolean getRead() {
-		return false;
+		return this.read;
 	}
 
 	public void setRead(boolean read) {
-
+		this.read = read;
 	}
 
 }
