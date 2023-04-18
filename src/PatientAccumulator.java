@@ -32,7 +32,16 @@ public class PatientAccumulator {
 	}
 
 	public void generateAllScores() {
-
+		if(this.iSSCalculator == null) {
+			this.iSSCalculator = new ISSCalculator();
+		}
+		// Useful for hashmap iteration
+		// https://www.programiz.com/java-programming/library/hashmap/foreach
+		this.patientCollection.forEach((key, value) -> {
+			this.iSSCalculator.calculateHTISS(value.getHypertensionStage());
+			this.iSSCalculator.calculateSpO2AIS(value.getSpO2());
+			value.setISS(this.iSSCalculator.outputISS());
+		});
 	}
 
 	public void generateAlerts() {
