@@ -28,6 +28,11 @@ class ThreadClass implements Runnable {
             if(patient.getRead()) {
                 // The Patient accumulator will be the starting point, waiting for information to trickle into its hash maps.
                 patientAccumulator.addWriter(this.patient.getId(), this.dataWriter);
+                // Assigning coordinators to accumulator's writer
+                patientAccumulator.getWriter(this.patient.getId()).addBpCoordinator(this.bpCoordinator);
+                patientAccumulator.getWriter(this.patient.getId()).addSpO2Coordinator(this.SpO2Coordinator);
+                // Sending patient from writer to accumulator
+                patientAccumulator.addPatient(patient.getId(), patientAccumulator.getWriter(this.patient.getId()).outputPatient(this.patient.getId()));
             }
             // First, output patient measured data to coordinators. Coordinators will create a patient profile with that info and send that to the data writer.
             this.bpSensor.outputSystolic();

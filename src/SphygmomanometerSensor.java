@@ -22,7 +22,11 @@ public class SphygmomanometerSensor {
 	}
 
 	public float outputDiastolic() {
-		return 0;
+		if(this.sphygmomanometerCoordinator == null) {
+			this.sphygmomanometerCoordinator = new SphygmomanometerCoordinator();
+			this.sphygmomanometerCoordinator.sphygmomanometerSensor = this;
+		}
+		return patientReadings.getDiastolic();
 	}
 
 }
