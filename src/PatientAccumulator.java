@@ -1,9 +1,9 @@
 import java.util.HashMap;
 public class PatientAccumulator {
 
-	private HashMap<Integer, Patient> patientCollection;
+	private HashMap<Integer, Patient> patientCollection = new HashMap<Integer, Patient>();
 
-	private HashMap<Integer, PatientDataWriter> patientDataWriterCollection;
+	private HashMap<Integer, PatientDataWriter> patientDataWriterCollection = new HashMap<Integer, PatientDataWriter>();
 
 	private AlertGenerator alertGenerator;
 

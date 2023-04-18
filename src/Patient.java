@@ -41,11 +41,11 @@ public class Patient {
 	}
 
 	public int getId() {
-		return 0;
+		return this.id;
 	}
 
 	public void setId(int id) {
-
+		this.id = id;
 	}
 
 }

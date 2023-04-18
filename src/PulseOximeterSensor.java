@@ -9,23 +9,25 @@ public class PulseOximeterSensor {
 	public OxygenCoordinator oxygenCoordinator;
 
 	public float getRed() {
-		return 0;
+		return this.red;
 	}
 
 	public void setRed(float red) {
-
+		this.red = red;
 	}
 
 	public float getIR() {
-		return 0;
+		return this.ir;
 	}
 
 	public void setIR(float ir) {
-
+		this.ir = ir;
 	}
 
 	public float outputRatio() {
-		return 0;
+		this.setRed(patientReadings.getRed());
+		this.setIR(patientReadings.getIR());
+		return this.getRed()/this.getIR();
 	}
 
 }

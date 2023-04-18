@@ -23,7 +23,8 @@ class ThreadClass implements Runnable {
 
     public void run() {
         try {
-            System.out.println("Patient " + this.patient.getId() + " in Round " + currentRound);
+            //System.out.println("Patient " + this.patient.getId() + " in Round " + currentRound);
+
             // Use components further down the chain to request the data. Make sure the patient is set to read.
             if(patient.getRead()) {
                 // The Patient accumulator will be the starting point, waiting for information to trickle into its hash maps.
@@ -33,10 +34,11 @@ class ThreadClass implements Runnable {
                 patientAccumulator.getWriter(this.patient.getId()).addSpO2Coordinator(this.SpO2Coordinator);
                 // Sending patient from writer to accumulator
                 patientAccumulator.addPatient(patient.getId(), patientAccumulator.getWriter(this.patient.getId()).outputPatient(this.patient.getId()));
+                //System.out.println(this.dataWriter.patient.getId());
             }
             // First, output patient measured data to coordinators. Coordinators will create a patient profile with that info and send that to the data writer.
-            this.bpSensor.outputSystolic();
-            this.bpSensor.outputDiastolic();
+            //this.bpSensor.outputSystolic();
+            //this.bpSensor.outputDiastolic();
 
             // This thread should have everything it needs to calculate the ISS score for this individual patient.
             // Simply pass the information along through each of the components and have the information accumulate in the patient accumulator.
@@ -102,6 +104,17 @@ public class SimulatedEnvironment {
                     }
                     for(int i = 0; i < patArr.length; i++) {
                         threads[i].join();
+                    }
+                    // Useful iteration for patient hashmap
+                    // https://www.programiz.com/java-programming/library/hashmap/foreach
+                    for(int j = 0; j < patArr.length; j++) {
+                        Patient p = patientAccumulator.getPatient(j);
+                        if(p != null) {
+                            System.out.println("Patient " + p.getId() + " in round " + x + "!");
+                        }
+                        else {
+                            System.out.println("Null in round " + x + "!");
+                        }
                     }
                 }
 
@@ -204,9 +217,9 @@ public class SimulatedEnvironment {
             patArr[i].setSystolic(scan.nextInt());
             System.out.println("Set the measured diastolic blood pressure for patient " + patArr[i].getId() + ".");
             patArr[i].setDiastolic(scan.nextInt());
-            System.out.println("Set the measured amount of red light for calculating SpO2.");
+            System.out.println("Set the measured amount of red light for calculating SpO2 for patient " + patArr[i].getId() + ".");
             patArr[i].setRed(scan.nextInt());
-            System.out.println("Set the measured amount of infrared light for calculating SpO2.");
+            System.out.println("Set the measured amount of infrared light for calculating SpO2 for patient " + patArr[i].getId() + ".");
             patArr[i].setIR(scan.nextInt());
             scan.nextLine();
         }
