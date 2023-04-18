@@ -17,27 +17,27 @@ public class Patient {
 	private OxygenCoordinator oxygenCoordinator;
 
 	public float getHypertensionStage() {
-		return 0;
+		return this.hypertensionStage;
 	}
 
 	public void setHypertensionStage(float hypertensionStage) {
-
+		this.hypertensionStage = hypertensionStage;
 	}
 
 	public float getSpO2() {
-		return 0;
+		return this.SpO2;
 	}
 
 	public void setSpO2(float SpO2) {
-
+		this.SpO2 = SpO2;
 	}
 
 	public int getISS() {
-		return 0;
+		return this.ISS;
 	}
 
 	public void setISS(int ISS) {
-
+		this.ISS = ISS;
 	}
 
 	public int getId() {

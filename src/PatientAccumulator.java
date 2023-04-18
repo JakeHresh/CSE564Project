@@ -27,6 +27,10 @@ public class PatientAccumulator {
 		return this.patientDataWriterCollection.get(Integer.valueOf(key));
 	}
 
+	public HashMap<Integer, Patient> getPatientCollection() {
+		return this.patientCollection;
+	}
+
 	public void generateAllScores() {
 
 	}

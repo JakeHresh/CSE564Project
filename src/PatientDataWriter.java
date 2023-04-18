@@ -2,9 +2,9 @@ public class PatientDataWriter {
 
 	public Patient patient;
 
-	private SphygmomanometerCoordinator sphygmomanometerCoordinator;
+	public SphygmomanometerCoordinator sphygmomanometerCoordinator;
 
-	private OxygenCoordinator oxygenCoordinator;
+	public OxygenCoordinator oxygenCoordinator;
 
 	public PatientAccumulator patientAccumulator;
 

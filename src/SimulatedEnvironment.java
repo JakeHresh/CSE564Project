@@ -28,13 +28,14 @@ class ThreadClass implements Runnable {
             // Use components further down the chain to request the data. Make sure the patient is set to read.
             if(patient.getRead()) {
                 // The Patient accumulator will be the starting point, waiting for information to trickle into its hash maps.
-                patientAccumulator.addWriter(this.patient.getId(), this.dataWriter);
+                this.patientAccumulator.addWriter(this.patient.getId(), this.dataWriter);
                 // Assigning coordinators to accumulator's writer
-                patientAccumulator.getWriter(this.patient.getId()).addBpCoordinator(this.bpCoordinator);
-                patientAccumulator.getWriter(this.patient.getId()).addSpO2Coordinator(this.SpO2Coordinator);
+                this.patientAccumulator.getWriter(this.patient.getId()).addBpCoordinator(this.bpCoordinator);
+                this.patientAccumulator.getWriter(this.patient.getId()).addSpO2Coordinator(this.SpO2Coordinator);
                 // Sending patient from writer to accumulator
-                patientAccumulator.addPatient(patient.getId(), patientAccumulator.getWriter(this.patient.getId()).outputPatient(this.patient.getId()));
+                this.patientAccumulator.addPatient(this.patient.getId(), this.patientAccumulator.getWriter(this.patient.getId()).outputPatient(this.patient.getId()));
                 //System.out.println(this.dataWriter.patient.getId());
+                //this.patientAccumulator.getWriter(this.patient.getId()).outputPatient(this.patient.getId());
             }
             // First, output patient measured data to coordinators. Coordinators will create a patient profile with that info and send that to the data writer.
             //this.bpSensor.outputSystolic();
@@ -105,12 +106,11 @@ public class SimulatedEnvironment {
                     for(int i = 0; i < patArr.length; i++) {
                         threads[i].join();
                     }
-                    // Useful iteration for patient hashmap
-                    // https://www.programiz.com/java-programming/library/hashmap/foreach
                     for(int j = 0; j < patArr.length; j++) {
                         Patient p = patientAccumulator.getPatient(j);
                         if(p != null) {
-                            System.out.println("Patient " + p.getId() + " in round " + x + "!");
+                            System.out.println("Patient " + p.getId() + " in round " + x + "! ");
+                            System.out.println("Patient hypertension stage: " + p.getHypertensionStage() + ". Patient SpO2: " + p.getSpO2() + ".");
                         }
                         else {
                             System.out.println("Null in round " + x + "!");
