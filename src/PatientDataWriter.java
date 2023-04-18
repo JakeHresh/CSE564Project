@@ -1,12 +1,12 @@
 public class PatientDataWriter {
 
-	private Patient patient;
+	public Patient patient;
 
 	private SphygmomanometerCoordinator sphygmomanometerCoordinator;
 
 	private OxygenCoordinator oxygenCoordinator;
 
-	private PatientAccumulator patientAccumulator;
+	public PatientAccumulator patientAccumulator;
 
 	public void addSpO2Coordinator(OxygenCoordinator coord) {
 		this.oxygenCoordinator = coord;

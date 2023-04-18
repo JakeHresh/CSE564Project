@@ -1,8 +1,17 @@
 public class SphygmomanometerSensor {
 
-	private PatientReadings patientReadings;
+	public PatientReadings patientReadings;
 
-	private SphygmomanometerCoordinator sphygmomanometerCoordinator;
+	public SphygmomanometerCoordinator sphygmomanometerCoordinator;
+
+	public SphygmomanometerSensor() {
+		this.patientReadings = null;
+		this.sphygmomanometerCoordinator = null;
+	}
+	public SphygmomanometerSensor(PatientReadings patientReadings, SphygmomanometerCoordinator sphygmomanometerCoordinator) {
+		this.patientReadings = patientReadings;
+		this.sphygmomanometerCoordinator = sphygmomanometerCoordinator;
+	}
 
 	public float outputSystolic() {
 		return 0;

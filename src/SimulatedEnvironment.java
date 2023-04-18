@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 class ThreadClass implements Runnable {
+    int currentRound = 0;
     PatientReadings patient = null;
     SphygmomanometerSensor bpSensor = null;
     SphygmomanometerCoordinator bpCoordinator = null;
@@ -9,7 +10,8 @@ class ThreadClass implements Runnable {
     PatientDataWriter dataWriter = null;
     PatientAccumulator patientAccumulator = null;
 
-    public ThreadClass(PatientReadings patient, SphygmomanometerSensor bpSensor, SphygmomanometerCoordinator bpCoordinator, PulseOximeterSensor SpO2Sensor, OxygenCoordinator SpO2Coordinator, PatientDataWriter dataWriter, PatientAccumulator patientAccumulator) {
+    public ThreadClass(int currentRound, PatientReadings patient, SphygmomanometerSensor bpSensor, SphygmomanometerCoordinator bpCoordinator, PulseOximeterSensor SpO2Sensor, OxygenCoordinator SpO2Coordinator, PatientDataWriter dataWriter, PatientAccumulator patientAccumulator) {
+        this.currentRound = currentRound;
         this.patient = patient;
         this.bpSensor = bpSensor;
         this.bpCoordinator = bpCoordinator;
@@ -20,13 +22,23 @@ class ThreadClass implements Runnable {
     }
 
     public void run() {
-
+        try {
+            System.out.println("Thread " + Thread.currentThread().getId() + " in Round " + currentRound + 1);
+            // This thread should have everything it needs to calculate the ISS score for this individual patient.
+            // Simply pass the information along through each of the components and have the information accumulate in the patient accumulator.
+            // What should be output?
+            // Accumulated Patient data, including systolic bp, diastolic bp, SpO2, and ISS. Should also show patient alert levels.
+            // Also shows current round.
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
 
 public class SimulatedEnvironment {
     static Scanner scan = new Scanner(System.in);
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         PatientReadings[] patArr = null;
         SphygmomanometerSensor[] bpSensors = null;
         SphygmomanometerCoordinator[] bpCoordinators = null;
@@ -66,9 +78,17 @@ public class SimulatedEnvironment {
                 patientAccumulator = new PatientAccumulator();
 
                 initializePatientCollection(patArr, patArr.length);
-                for(int i = 0; i < patArr.length; i++) {
-                    Thread t = new Thread(new ThreadClass(patArr[i], bpSensors[i], bpCoordinators[i], SpO2Sensors[i], SpO2Coordinators[i], dataWriters[i], patientAccumulator));
-                    t.start();
+                initializeRemainingComponents(patArr, bpSensors, bpCoordinators, SpO2Sensors, SpO2Coordinators, dataWriters, patArr.length);
+                Thread[] threads = new Thread[patArr.length];
+                // For loop that executes for x rounds.
+                for(int x = 0; x < 1000; x++) {
+                    for(int i = 0; i < patArr.length; i++) {
+                        threads[i] = new Thread(new ThreadClass(x, patArr[i], bpSensors[i], bpCoordinators[i], SpO2Sensors[i], SpO2Coordinators[i], dataWriters[i], patientAccumulator));
+                        threads[i].start();
+                    }
+                    for(int i = 0; i < patArr.length; i++) {
+                        threads[i].join();
+                    }
                 }
 
                 System.out.println(patArr.length);
@@ -89,6 +109,7 @@ public class SimulatedEnvironment {
                 patientAccumulator = new PatientAccumulator();
 
                 initializePatientCollection(patArr, patArr.length);
+                initializeRemainingComponents(patArr, bpSensors, bpCoordinators, SpO2Sensors, SpO2Coordinators, dataWriters, patArr.length);
             }
             else if(input.equals("3")) {
                 System.out.println("Running Experiment 3");
@@ -100,6 +121,7 @@ public class SimulatedEnvironment {
                 dataWriters = new PatientDataWriter[6];
                 patientAccumulator = new PatientAccumulator();
                 initializePatientCollection(patArr, patArr.length);
+                initializeRemainingComponents(patArr, bpSensors, bpCoordinators, SpO2Sensors, SpO2Coordinators, dataWriters, patArr.length);
             }
             else if(input.equals("4")) {
                 System.out.println("Running Experiment 4");
@@ -111,6 +133,7 @@ public class SimulatedEnvironment {
                 dataWriters = new PatientDataWriter[2];
                 patientAccumulator = new PatientAccumulator();
                 initializePatientCollection(patArr, patArr.length);
+                initializeRemainingComponents(patArr, bpSensors, bpCoordinators, SpO2Sensors, SpO2Coordinators, dataWriters, patArr.length);
                 patArr[1].setRead(false);
             }
             else if(input.equals("5")) {
@@ -123,6 +146,7 @@ public class SimulatedEnvironment {
                 dataWriters = new PatientDataWriter[4];
                 patientAccumulator = new PatientAccumulator();
                 initializePatientCollection(patArr, patArr.length);
+                initializeRemainingComponents(patArr, bpSensors, bpCoordinators, SpO2Sensors, SpO2Coordinators, dataWriters, patArr.length);
                 patArr[2].setRead(false);
                 patArr[3].setRead(false);
             }
@@ -136,6 +160,7 @@ public class SimulatedEnvironment {
                 dataWriters = new PatientDataWriter[6];
                 patientAccumulator = new PatientAccumulator();
                 initializePatientCollection(patArr, patArr.length);
+                initializeRemainingComponents(patArr, bpSensors, bpCoordinators, SpO2Sensors, SpO2Coordinators, dataWriters, patArr.length);
                 patArr[3].setRead(false);
                 patArr[4].setRead(false);
                 patArr[5].setRead(false);
@@ -169,12 +194,25 @@ public class SimulatedEnvironment {
             patArr[i].setRed(scan.nextInt());
             System.out.println("Set the measured amount of infrared light for calculating SpO2.");
             patArr[i].setIR(scan.nextInt());
+            scan.nextLine();
         }
     }
 
-    public static void initializeSphygmomanometerSensors(SphygmomanometerSensor[] bpSensors, int patientCount) {
+    public static void initializeRemainingComponents(PatientReadings[] patArr, SphygmomanometerSensor[] bpSensors, SphygmomanometerCoordinator[] bpCoordinators, PulseOximeterSensor[] SpO2Sensors, OxygenCoordinator[] SpO2Coordinators, PatientDataWriter[] dataWriters, int patientCount) {
         for(int i = 0; i < patientCount; i++) {
             bpSensors[i] = new SphygmomanometerSensor();
+            bpSensors[i].patientReadings = patArr[i];
+            bpCoordinators[i] = new SphygmomanometerCoordinator();
+            bpSensors[i].sphygmomanometerCoordinator = bpCoordinators[i];
+            bpCoordinators[i].sphygmomanometerSensor = bpSensors[i];
+            SpO2Sensors[i] = new PulseOximeterSensor();
+            SpO2Sensors[i].patientReadings = patArr[i];
+            SpO2Coordinators[i] = new OxygenCoordinator();
+            SpO2Sensors[i].oxygenCoordinator = SpO2Coordinators[i];
+            SpO2Coordinators[i].pulseOximeterSensor = SpO2Sensors[i];
+            dataWriters[i] = new PatientDataWriter();
+            dataWriters[i].addBpCoordinator(bpCoordinators[i]);
+            dataWriters[i].addSpO2Coordinator(SpO2Coordinators[i]);
         }
     }
 }

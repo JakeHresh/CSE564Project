@@ -4,9 +4,9 @@ public class PulseOximeterSensor {
 
 	private float ir;
 
-	private PatientReadings patientReadings;
+	public PatientReadings patientReadings;
 
-	private OxygenCoordinator oxygenCoordinator;
+	public OxygenCoordinator oxygenCoordinator;
 
 	public float getRed() {
 		return 0;

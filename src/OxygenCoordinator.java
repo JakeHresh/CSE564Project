@@ -2,11 +2,11 @@ public class OxygenCoordinator {
 
 	private boolean re_read;
 
-	private PulseOximeterSensor pulseOximeterSensor;
+	public PulseOximeterSensor pulseOximeterSensor;
 
-	private PatientDataWriter patientDataWriter;
+	public PatientDataWriter patientDataWriter;
 
-	private Patient patient;
+	public Patient patient;
 
 	public float outputOxygenSaturation() {
 		return 0;

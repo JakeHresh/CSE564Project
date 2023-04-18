@@ -2,11 +2,11 @@ public class SphygmomanometerCoordinator {
 
 	private boolean re_read;
 
-	private SphygmomanometerSensor sphygmomanometerSensor;
+	public SphygmomanometerSensor sphygmomanometerSensor;
 
-	private PatientDataWriter patientDataWriter;
+	public PatientDataWriter patientDataWriter;
 
-	private Patient patient;
+	public Patient patient;
 
 	public float outputHypertensionStage() {
 		return 0;
