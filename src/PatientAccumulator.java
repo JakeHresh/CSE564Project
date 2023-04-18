@@ -1,8 +1,10 @@
+import java.util.HashMap;
+import java.util.ArrayList;
 public class PatientAccumulator {
 
-	private Patient[] patient;
+	private HashMap<Integer, Patient> patientCollection;
 
-	private PatientDataWriter[] patientDataWriter;
+	private ArrayList<PatientDataWriter> patientDataWriterCollection;
 
 	private AlertGenerator alertGenerator;
 
