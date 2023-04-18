@@ -23,7 +23,16 @@ class ThreadClass implements Runnable {
 
     public void run() {
         try {
-            System.out.println("Thread " + Thread.currentThread().getId() + " in Round " + currentRound + 1);
+            System.out.println("Patient " + this.patient.getId() + " in Round " + currentRound);
+            // Use components further down the chain to request the data. Make sure the patient is set to read.
+            if(patient.getRead()) {
+                // The Patient accumulator will be the starting point, waiting for information to trickle into its hash maps.
+                patientAccumulator.addWriter(this.patient.getId(), this.dataWriter);
+            }
+            // First, output patient measured data to coordinators. Coordinators will create a patient profile with that info and send that to the data writer.
+            this.bpSensor.outputSystolic();
+            this.bpSensor.outputDiastolic();
+
             // This thread should have everything it needs to calculate the ISS score for this individual patient.
             // Simply pass the information along through each of the components and have the information accumulate in the patient accumulator.
             // What should be output?
@@ -83,7 +92,7 @@ public class SimulatedEnvironment {
                 // For loop that executes for x rounds.
                 for(int x = 0; x < 1000; x++) {
                     for(int i = 0; i < patArr.length; i++) {
-                        threads[i] = new Thread(new ThreadClass(x, patArr[i], bpSensors[i], bpCoordinators[i], SpO2Sensors[i], SpO2Coordinators[i], dataWriters[i], patientAccumulator));
+                        threads[i] = new Thread(new ThreadClass(x + 1, patArr[i], bpSensors[i], bpCoordinators[i], SpO2Sensors[i], SpO2Coordinators[i], dataWriters[i], patientAccumulator));
                         threads[i].start();
                     }
                     for(int i = 0; i < patArr.length; i++) {
@@ -205,11 +214,13 @@ public class SimulatedEnvironment {
             bpCoordinators[i] = new SphygmomanometerCoordinator();
             bpSensors[i].sphygmomanometerCoordinator = bpCoordinators[i];
             bpCoordinators[i].sphygmomanometerSensor = bpSensors[i];
+
             SpO2Sensors[i] = new PulseOximeterSensor();
             SpO2Sensors[i].patientReadings = patArr[i];
             SpO2Coordinators[i] = new OxygenCoordinator();
             SpO2Sensors[i].oxygenCoordinator = SpO2Coordinators[i];
             SpO2Coordinators[i].pulseOximeterSensor = SpO2Sensors[i];
+
             dataWriters[i] = new PatientDataWriter();
             dataWriters[i].addBpCoordinator(bpCoordinators[i]);
             dataWriters[i].addSpO2Coordinator(SpO2Coordinators[i]);

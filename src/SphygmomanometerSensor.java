@@ -14,7 +14,11 @@ public class SphygmomanometerSensor {
 	}
 
 	public float outputSystolic() {
-		return 0;
+		if(this.sphygmomanometerCoordinator == null) {
+			this.sphygmomanometerCoordinator = new SphygmomanometerCoordinator();
+			this.sphygmomanometerCoordinator.sphygmomanometerSensor = this;
+		}
+		return patientReadings.getSystolic();
 	}
 
 	public float outputDiastolic() {
