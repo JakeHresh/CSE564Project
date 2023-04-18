@@ -12,15 +12,27 @@ public class AlertGenerator {
 
 	}
 
-	public void generateAlert() {
-
+	public void generateAlert(Patient patient) {
+		int iss = patient.getISS();
+		if(iss == 0) {
+			System.out.println("Patient " + patient.getId() + " Alert Level: No Response");
+		}
+		else if(iss > 0 && iss < 7) {
+			System.out.println("Patient " + patient.getId() + " Alert Level: Delayed");
+		}
+		else if(iss > 6 && iss < 17) {
+			System.out.println("Patient " + patient.getId() + " Alert Level: Urgent");
+		}
+		else if(iss > 16) {
+			System.out.println("Patient " + patient.getId() + " Alert Level: Immediate");
+		}
 	}
 
-	public boolean administerMedicine() {
+	public boolean administerMedicine(Patient patient) {
 		return false;
 	}
 
-	public boolean pumpOxygen() {
+	public boolean pumpOxygen(Patient patient) {
 		return false;
 	}
 

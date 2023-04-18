@@ -37,6 +37,7 @@ class ThreadClass implements Runnable {
                 //System.out.println(this.dataWriter.patient.getId());
                 //this.patientAccumulator.getWriter(this.patient.getId()).outputPatient(this.patient.getId());
                 this.patientAccumulator.generateAllScores();
+                this.patientAccumulator.generateAlerts();
             }
             // First, output patient measured data to coordinators. Coordinators will create a patient profile with that info and send that to the data writer.
             //this.bpSensor.outputSystolic();

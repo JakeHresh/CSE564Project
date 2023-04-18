@@ -45,7 +45,13 @@ public class PatientAccumulator {
 	}
 
 	public void generateAlerts() {
-
+		System.out.println("Generating alerts...");
+		if(this.alertGenerator == null) {
+			this.alertGenerator = new AlertGenerator();
+			this.patientCollection.forEach((key, value) -> {
+				this.alertGenerator.generateAlert(value);
+			});
+		}
 	}
 
 }
