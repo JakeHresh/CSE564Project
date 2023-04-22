@@ -39,15 +39,7 @@ class ThreadClass implements Runnable {
                 this.patientAccumulator.generateAllScores();
                 this.patientAccumulator.generateAlerts();
             }
-            // First, output patient measured data to coordinators. Coordinators will create a patient profile with that info and send that to the data writer.
-            //this.bpSensor.outputSystolic();
-            //this.bpSensor.outputDiastolic();
 
-            // This thread should have everything it needs to calculate the ISS score for this individual patient.
-            // Simply pass the information along through each of the components and have the information accumulate in the patient accumulator.
-            // What should be output?
-            // Accumulated Patient data, including systolic bp, diastolic bp, SpO2, and ISS. Should also show patient alert levels.
-            // Also shows current round.
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
