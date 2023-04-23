@@ -1,12 +1,12 @@
 public class Patient {
 
-	private float hypertensionStage;
+	private float hypertensionStage = -1;
 
-	private float SpO2;
+	private float SpO2 = -1;
 
 	private int ISS = -1;
 
-	private int id;
+	private int id = -1;
 
 	private PatientDataWriter patientDataWriter;
 

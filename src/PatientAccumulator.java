@@ -41,12 +41,7 @@ public class PatientAccumulator {
 			this.iSSCalculator.calculateHTISS(value.getHypertensionStage());
 			this.iSSCalculator.calculateSpO2AIS(value.getSpO2());
 			int tempISS = this.iSSCalculator.outputISS();
-			if(tempISS == -1) {
-				value.setISS(value.getISS());
-			}
-			else {
-				value.setISS(tempISS);
-			}
+			value.setISS(tempISS);
 		});
 	}
 

@@ -1,6 +1,6 @@
 public class AlertGenerator {
 
-	private int alert_level;
+	private int alert_level = -1;
 
 	private PatientAccumulator patientAccumulator;
 

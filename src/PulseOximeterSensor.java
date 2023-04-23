@@ -1,8 +1,8 @@
 public class PulseOximeterSensor {
 
-	private float red;
+	private float red = 0;
 
-	private float ir;
+	private float ir = 1;
 
 	public PatientReadings patientReadings;
 

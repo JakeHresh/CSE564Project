@@ -1,8 +1,8 @@
 public class ISSCalculator {
 
-	private int ht_ISS;
+	private int ht_ISS = 0;
 
-	private int SpO2_AIS;
+	private int SpO2_AIS = 0;
 
 	private PatientAccumulator patientAccumulator;
 
@@ -49,7 +49,7 @@ public class ISSCalculator {
 			else if(SpO2 < 95) {
 				AIS = 1;
 			}
-			else if(SpO2 >= 95 || SpO2 == 0) {
+			else {
 				AIS = 0;
 			}
 			this.setSpO2_AIS(AIS);

@@ -1,16 +1,16 @@
 public class PatientReadings {
 
-	private int id;
+	private int id = -1;
 
-	private float measured_systolic;
+	private float measured_systolic = -1;
 
-	private float measured_diastolic;
+	private float measured_diastolic = -1;
 
-	private float measured_red;
+	private float measured_red = -1;
 
-	private float measured_ir;
+	private float measured_ir = -1;
 
-	private boolean read;
+	private boolean read = true;
 
 	private SphygmomanometerSensor sphygmomanometerSensor;
 
