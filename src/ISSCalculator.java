@@ -57,8 +57,14 @@ public class ISSCalculator {
 	}
 
 	public int outputISS() {
-		if(this.getHt_ISS() == -1 || this.getSpO2_AIS() == -1) {
+		if(this.getHt_ISS() == -1 && this.getSpO2_AIS() == -1) {
 			return -1;
+		}
+		else if(this.getHt_ISS() == -1) {
+			return (this.getSpO2_AIS() * this.getSpO2_AIS());
+		}
+		else if(this.getSpO2_AIS() == -1) {
+			return this.getHt_ISS();
 		}
 		return this.getHt_ISS() + (this.getSpO2_AIS() * this.getSpO2_AIS());
 	}

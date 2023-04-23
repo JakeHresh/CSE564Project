@@ -40,7 +40,13 @@ public class PatientAccumulator {
 		this.patientCollection.forEach((key, value) -> {
 			this.iSSCalculator.calculateHTISS(value.getHypertensionStage());
 			this.iSSCalculator.calculateSpO2AIS(value.getSpO2());
-			value.setISS(this.iSSCalculator.outputISS());
+			int tempISS = this.iSSCalculator.outputISS();
+			if(tempISS == -1) {
+				value.setISS(value.getISS());
+			}
+			else {
+				value.setISS(tempISS);
+			}
 		});
 	}
 
@@ -51,8 +57,16 @@ public class PatientAccumulator {
 		}
 		this.patientCollection.forEach((key, value) -> {
 			this.alertGenerator.generateAlert(value);
-			this.alertGenerator.administerMedicine(value);
-			this.alertGenerator.pumpOxygen(value);
+			// check here whether to administer medicine
+			if(this.alertGenerator.administerMedicine(value)) {
+				this.patientDataWriterCollection.get(key).sphygmomanometerCoordinator.sphygmomanometerSensor.patientReadings.setSystolic(this.patientDataWriterCollection.get(key).sphygmomanometerCoordinator.sphygmomanometerSensor.patientReadings.getSystolic() - 0.1f);
+				this.patientDataWriterCollection.get(key).sphygmomanometerCoordinator.sphygmomanometerSensor.patientReadings.setDiastolic(this.patientDataWriterCollection.get(key).sphygmomanometerCoordinator.sphygmomanometerSensor.patientReadings.getDiastolic() - 0.1f);
+				this.patientDataWriterCollection.get(key).sphygmomanometerCoordinator.setReread(true);
+			}
+			if(this.alertGenerator.pumpOxygen(value)) {
+				this.patientDataWriterCollection.get(key).oxygenCoordinator.pulseOximeterSensor.patientReadings.setRed(this.patientDataWriterCollection.get(key).oxygenCoordinator.pulseOximeterSensor.patientReadings.getRed()/1.005f);
+				this.patientDataWriterCollection.get(key).oxygenCoordinator.setReread(true);
+			}
 		});
 	}
 

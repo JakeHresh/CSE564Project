@@ -4,7 +4,7 @@ public class Patient {
 
 	private float SpO2;
 
-	private int ISS;
+	private int ISS = -1;
 
 	private int id;
 

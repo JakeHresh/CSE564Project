@@ -62,7 +62,7 @@ public class SimulatedEnvironment {
 
         System.out.println("Welcome to Team 7's Triage Classification System!");
         System.out.println("When prompted, you may select a one of the experiments against which you can test this system.");
-        System.out.println("Each experiment will last 20 seconds.");
+        System.out.println("Each experiment will last 5,000 seconds.");
         System.out.println("When you wish to exit, enter any character.");
         // Consider how much time corresponds to a single round.
         // This will also inform the experiments.
@@ -72,9 +72,9 @@ public class SimulatedEnvironment {
             System.out.println("1. Prioritizing two patients");
             System.out.println("2. Prioritizing four patients");
             System.out.println("3. Prioritizing six patients");
-            System.out.println("4. Prioritizing one patient, then adding one more after 1 second");
-            System.out.println("5. Prioritizing two patients, then adding one per second until there are four patients in total");
-            System.out.println("6. Prioritizing three patients, then adding one per second until there are six patients in total");
+            System.out.println("4. Prioritizing one patient, then adding one more after 100 seconds");
+            System.out.println("5. Prioritizing two patients, then adding one every hundredth second until there are four patients in total");
+            System.out.println("6. Prioritizing three patients, then adding one every hundredth second until there are six patients in total");
 
             input = scan.nextLine();
 
@@ -92,7 +92,7 @@ public class SimulatedEnvironment {
                 initializeRemainingComponents(patArr, bpSensors, bpCoordinators, SpO2Sensors, SpO2Coordinators, dataWriters, patArr.length);
                 Thread[] threads = new Thread[patArr.length];
                 // For loop that executes for x rounds.
-                for(int x = 0; x < 1000; x++) {
+                for(int x = 0; x < 500; x++) {
                     for(int i = 0; i < patArr.length; i++) {
                         threads[i] = new Thread(new ThreadClass(x + 1, patArr[i], bpSensors[i], bpCoordinators[i], SpO2Sensors[i], SpO2Coordinators[i], dataWriters[i], patientAccumulator));
                         threads[i].start();
@@ -104,20 +104,29 @@ public class SimulatedEnvironment {
                         Patient p = patientAccumulator.getPatient(j);
                         if(p != null) {
                             System.out.println("Patient " + p.getId() + " in round " + x + "! ");
-                            System.out.println("Patient hypertension stage: " + p.getHypertensionStage() + ". Patient SpO2: " + p.getSpO2() + ".");
+                            float htStage = p.getHypertensionStage();
+                            float SpO2 = p.getSpO2();
+                            String htText = "";
+                            String spO2Text = "";
+                            if(htStage == -1) {
+                                htText += "Recovered";
+                            }
+                            else {
+                                htText += "" + htStage;
+                            }
+                            if(SpO2 == -1 || SpO2 == 100) {
+                                spO2Text += "Recovered";
+                            }
+                            else {
+                                spO2Text += "" + SpO2;
+                            }
+                            System.out.println("Patient hypertension stage: " + htText + ". Patient SpO2: " + spO2Text + ".");
                         }
                         else {
                             System.out.println("Null in round " + x + "!");
                         }
                     }
                 }
-
-                System.out.println(patArr.length);
-                System.out.println(bpSensors.length);
-                System.out.println(bpCoordinators.length);
-                System.out.println(SpO2Sensors.length);
-                System.out.println(SpO2Coordinators.length);
-                System.out.println(dataWriters.length);
             }
             else if(input.equals("2")) {
                 System.out.println("Running Experiment 2");
@@ -131,6 +140,44 @@ public class SimulatedEnvironment {
 
                 initializePatientCollection(patArr, patArr.length);
                 initializeRemainingComponents(patArr, bpSensors, bpCoordinators, SpO2Sensors, SpO2Coordinators, dataWriters, patArr.length);
+
+                Thread[] threads = new Thread[patArr.length];
+                // For loop that executes for x rounds.
+                for(int x = 0; x < 500; x++) {
+                    for(int i = 0; i < patArr.length; i++) {
+                        threads[i] = new Thread(new ThreadClass(x + 1, patArr[i], bpSensors[i], bpCoordinators[i], SpO2Sensors[i], SpO2Coordinators[i], dataWriters[i], patientAccumulator));
+                        threads[i].start();
+                    }
+                    for(int i = 0; i < patArr.length; i++) {
+                        threads[i].join();
+                    }
+                    for(int j = 0; j < patArr.length; j++) {
+                        Patient p = patientAccumulator.getPatient(j);
+                        if(p != null) {
+                            System.out.println("Patient " + p.getId() + " in round " + x + "! ");
+                            float htStage = p.getHypertensionStage();
+                            float SpO2 = p.getSpO2();
+                            String htText = "";
+                            String spO2Text = "";
+                            if(htStage == -1) {
+                                htText += "Recovered";
+                            }
+                            else {
+                                htText += "" + htStage;
+                            }
+                            if(SpO2 == -1 || SpO2 == 100) {
+                                spO2Text += "Recovered";
+                            }
+                            else {
+                                spO2Text += "" + SpO2;
+                            }
+                            System.out.println("Patient hypertension stage: " + htText + ". Patient SpO2: " + spO2Text + ".");
+                        }
+                        else {
+                            System.out.println("Null in round " + x + "!");
+                        }
+                    }
+                }
             }
             else if(input.equals("3")) {
                 System.out.println("Running Experiment 3");
@@ -143,6 +190,44 @@ public class SimulatedEnvironment {
                 patientAccumulator = new PatientAccumulator();
                 initializePatientCollection(patArr, patArr.length);
                 initializeRemainingComponents(patArr, bpSensors, bpCoordinators, SpO2Sensors, SpO2Coordinators, dataWriters, patArr.length);
+
+                Thread[] threads = new Thread[patArr.length];
+                // For loop that executes for x rounds.
+                for(int x = 0; x < 500; x++) {
+                    for(int i = 0; i < patArr.length; i++) {
+                        threads[i] = new Thread(new ThreadClass(x + 1, patArr[i], bpSensors[i], bpCoordinators[i], SpO2Sensors[i], SpO2Coordinators[i], dataWriters[i], patientAccumulator));
+                        threads[i].start();
+                    }
+                    for(int i = 0; i < patArr.length; i++) {
+                        threads[i].join();
+                    }
+                    for(int j = 0; j < patArr.length; j++) {
+                        Patient p = patientAccumulator.getPatient(j);
+                        if(p != null) {
+                            System.out.println("Patient " + p.getId() + " in round " + x + "! ");
+                            float htStage = p.getHypertensionStage();
+                            float SpO2 = p.getSpO2();
+                            String htText = "";
+                            String spO2Text = "";
+                            if(htStage == -1) {
+                                htText += "Recovered";
+                            }
+                            else {
+                                htText += "" + htStage;
+                            }
+                            if(SpO2 == -1 || SpO2 == 100) {
+                                spO2Text += "Recovered";
+                            }
+                            else {
+                                spO2Text += "" + SpO2;
+                            }
+                            System.out.println("Patient hypertension stage: " + htText + ". Patient SpO2: " + spO2Text + ".");
+                        }
+                        else {
+                            System.out.println("Null in round " + x + "!");
+                        }
+                    }
+                }
             }
             else if(input.equals("4")) {
                 System.out.println("Running Experiment 4");
@@ -156,6 +241,47 @@ public class SimulatedEnvironment {
                 initializePatientCollection(patArr, patArr.length);
                 initializeRemainingComponents(patArr, bpSensors, bpCoordinators, SpO2Sensors, SpO2Coordinators, dataWriters, patArr.length);
                 patArr[1].setRead(false);
+
+                Thread[] threads = new Thread[patArr.length];
+                // For loop that executes for x rounds.
+                for(int x = 0; x < 500; x++) {
+                    if(x == 9) {
+                        patArr[1].setRead(true);
+                    }
+                    for(int i = 0; i < patArr.length; i++) {
+                        threads[i] = new Thread(new ThreadClass(x + 1, patArr[i], bpSensors[i], bpCoordinators[i], SpO2Sensors[i], SpO2Coordinators[i], dataWriters[i], patientAccumulator));
+                        threads[i].start();
+                    }
+                    for(int i = 0; i < patArr.length; i++) {
+                        threads[i].join();
+                    }
+                    for(int j = 0; j < patArr.length; j++) {
+                        Patient p = patientAccumulator.getPatient(j);
+                        if(p != null) {
+                            System.out.println("Patient " + p.getId() + " in round " + x + "! ");
+                            float htStage = p.getHypertensionStage();
+                            float SpO2 = p.getSpO2();
+                            String htText = "";
+                            String spO2Text = "";
+                            if(htStage == -1) {
+                                htText += "Recovered";
+                            }
+                            else {
+                                htText += "" + htStage;
+                            }
+                            if(SpO2 == -1 || SpO2 == 100) {
+                                spO2Text += "Recovered";
+                            }
+                            else {
+                                spO2Text += "" + SpO2;
+                            }
+                            System.out.println("Patient hypertension stage: " + htText + ". Patient SpO2: " + spO2Text + ".");
+                        }
+                        else {
+                            System.out.println("Null in round " + x + "!");
+                        }
+                    }
+                }
             }
             else if(input.equals("5")) {
                 System.out.println("Running Experiment 5");
@@ -170,6 +296,50 @@ public class SimulatedEnvironment {
                 initializeRemainingComponents(patArr, bpSensors, bpCoordinators, SpO2Sensors, SpO2Coordinators, dataWriters, patArr.length);
                 patArr[2].setRead(false);
                 patArr[3].setRead(false);
+
+                Thread[] threads = new Thread[patArr.length];
+                // For loop that executes for x rounds.
+                for(int x = 0; x < 500; x++) {
+                    if(x == 9) {
+                        patArr[2].setRead(true);
+                    }
+                    if(x == 19) {
+                        patArr[3].setRead(true);
+                    }
+                    for(int i = 0; i < patArr.length; i++) {
+                        threads[i] = new Thread(new ThreadClass(x + 1, patArr[i], bpSensors[i], bpCoordinators[i], SpO2Sensors[i], SpO2Coordinators[i], dataWriters[i], patientAccumulator));
+                        threads[i].start();
+                    }
+                    for(int i = 0; i < patArr.length; i++) {
+                        threads[i].join();
+                    }
+                    for(int j = 0; j < patArr.length; j++) {
+                        Patient p = patientAccumulator.getPatient(j);
+                        if(p != null) {
+                            System.out.println("Patient " + p.getId() + " in round " + x + "! ");
+                            float htStage = p.getHypertensionStage();
+                            float SpO2 = p.getSpO2();
+                            String htText = "";
+                            String spO2Text = "";
+                            if(htStage == -1) {
+                                htText += "Recovered";
+                            }
+                            else {
+                                htText += "" + htStage;
+                            }
+                            if(SpO2 == -1 || SpO2 == 100) {
+                                spO2Text += "Recovered";
+                            }
+                            else {
+                                spO2Text += "" + SpO2;
+                            }
+                            System.out.println("Patient hypertension stage: " + htText + ". Patient SpO2: " + spO2Text + ".");
+                        }
+                        else {
+                            System.out.println("Null in round " + x + "!");
+                        }
+                    }
+                }
             }
             else if(input.equals("6")) {
                 System.out.println("Running Experiment 6");
@@ -185,6 +355,53 @@ public class SimulatedEnvironment {
                 patArr[3].setRead(false);
                 patArr[4].setRead(false);
                 patArr[5].setRead(false);
+
+                Thread[] threads = new Thread[patArr.length];
+                // For loop that executes for x rounds.
+                for(int x = 0; x < 500; x++) {
+                    if(x == 9) {
+                        patArr[3].setRead(true);
+                    }
+                    if(x == 19) {
+                        patArr[4].setRead(true);
+                    }
+                    if(x == 29) {
+                        patArr[5].setRead(true);
+                    }
+                    for(int i = 0; i < patArr.length; i++) {
+                        threads[i] = new Thread(new ThreadClass(x + 1, patArr[i], bpSensors[i], bpCoordinators[i], SpO2Sensors[i], SpO2Coordinators[i], dataWriters[i], patientAccumulator));
+                        threads[i].start();
+                    }
+                    for(int i = 0; i < patArr.length; i++) {
+                        threads[i].join();
+                    }
+                    for(int j = 0; j < patArr.length; j++) {
+                        Patient p = patientAccumulator.getPatient(j);
+                        if(p != null) {
+                            System.out.println("Patient " + p.getId() + " in round " + x + "! ");
+                            float htStage = p.getHypertensionStage();
+                            float SpO2 = p.getSpO2();
+                            String htText = "";
+                            String spO2Text = "";
+                            if(htStage == -1) {
+                                htText += "Recovered";
+                            }
+                            else {
+                                htText += "" + htStage;
+                            }
+                            if(SpO2 == -1 || SpO2 == 100) {
+                                spO2Text += "Recovered";
+                            }
+                            else {
+                                spO2Text += "" + SpO2;
+                            }
+                            System.out.println("Patient hypertension stage: " + htText + ". Patient SpO2: " + spO2Text + ".");
+                        }
+                        else {
+                            System.out.println("Null in round " + x + "!");
+                        }
+                    }
+                }
             }
             else {
                 break;
